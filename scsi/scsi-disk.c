@@ -144,6 +144,15 @@ tme_scsi_disk_cdb_xfer(struct tme_scsi_device *scsi_device,
 #define tme_scsi_disk_cdb_read(d, l, t) tme_scsi_disk_cdb_xfer(d, l, t, TRUE)
 #define tme_scsi_disk_cdb_write(d, l, t) tme_scsi_disk_cdb_xfer(d, l, t, FALSE)
 
+/* this implements the disk REZERO UNIT command: */
+_TME_SCSI_DEVICE_CDB_DECL(tme_scsi_disk_cdb_rezero_unit)
+{
+  
+  tme_scsi_device_target_do_dsmf(scsi_device,
+				 TME_SCSI_STATUS_GOOD,
+				 TME_SCSI_MSG_CMD_COMPLETE);
+}
+
 /* this implements the disk FORMAT UNIT command: */
 _TME_SCSI_DEVICE_CDB_DECL(tme_scsi_disk_cdb_format_unit)
 {
@@ -875,6 +884,9 @@ NME_ELEMENT_SUB_NEW_DECL(scsi,disk) {
   TME_SCSI_DEVICE_DO_CDB(scsi_device,
 			 TME_SCSI_CDB_INQUIRY,
 			 tme_scsi_disk_cdb_inquiry);
+  TME_SCSI_DEVICE_DO_CDB(scsi_device,
+       TME_SCSI_CDB_DISK_REZERO_UNIT,
+       tme_scsi_disk_cdb_rezero_unit);
   TME_SCSI_DEVICE_DO_CDB(scsi_device,
 			 TME_SCSI_CDB_DISK_FORMAT_UNIT,
 			 tme_scsi_disk_cdb_format_unit);
